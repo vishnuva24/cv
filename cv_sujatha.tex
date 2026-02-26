@@ -1,0 +1,602 @@
+\documentclass[10pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=2 cm, % seperation between body and page edge from the top
+    bottom=1 cm, % seperation between body and page edge from the bottom
+    left=2 cm, % seperation between body and page edge from the left
+    right=2 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging 
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 79, 144} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={Sujatha Varadarajan's CV},
+    pdfauthor={Sujatha Varadarajan},
+    pdfcreator={LaTeX with RenderCV},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{datetime}
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    % \usepackage[T1]{fontenc} % this breaks sb2nov
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+
+
+% Some settings:
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0cm} % set column seperation
+\makeatletter
+\let\ps@customFooterStyle\ps@plain % Copy the plain style to customFooterStyle
+% \patchcmd{\ps@customFooterStyle}{\thepage}{
+%     \color{gray}\textit{\small Vishnu Varadarajan - Page \thepage{} of \pageref*{LastPage}}
+% }{}{} % replace number by desired string
+% \makeatother
+\patchcmd{\ps@customFooterStyle}{\thepage}{}{}{} % replace number by desired string
+\pagestyle{customFooterStyle}
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.3 cm
+}{
+    % bottom space:
+    0.2 cm
+} % section title spacing
+
+\renewcommand\labelitemi{$\circ$} % custom bullet points
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0.4 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights for bullet entries
+
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0.2 cm + 0.00001 cm
+    }{
+        0.2 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+} % new environment for the header
+
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+  \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+    \put(
+        \LenToUnit{\paperwidth-2 cm-0.2 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{
+        \small\color{gray}\textit{Last updated in \monthname \ \the\year}\hspace{\widthof{Last updated in June 2025}}
+    }}}%
+  }%
+}%
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+% new command for external links:
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
+
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{}
+
+    \placelastupdatedtext
+    \begin{header}
+        \textbf{\fontsize{24 pt}{24 pt}\selectfont Sujatha Varadarajan}
+
+        \vspace{0.3 cm}
+
+        \normalsize
+        \mbox{{\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm}Pune}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{mailto:sujsvarada@gmail.com}{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}sujsvarada@gmail.com}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{tel:+91 8888806426}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+91 8888806426}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        % \mbox{\hrefWithoutArrow{https://yourwebsite.com/}{\color{black}{\footnotesize\faLink}\hspace*{0.13cm}yourwebsite.com}}%
+        % \kern 0.25 cm%
+        % \AND%
+        % \kern 0.25 cm%
+        % \mbox{\hrefWithoutArrow{https://linkedin.com/in/yourusername}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}yourusername}}%
+        % \kern 0.25 cm%
+        % \AND%
+        % \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://in.linkedin.com/in/dr-sujatha-varadarajan-7006216}{\color{black}{\footnotesize\faLinkedin}\hspace*{0.13cm}Linkdin}}%
+    \end{header}
+
+    \vspace{0.3 cm - 0.1 cm}
+
+
+    A versatile educationist with a strong passion for teaching and enhancing the teaching-learning process. Brings extensive experience in pedagogical design, curriculum development, and organizing outreach programs and faculty development initiatives. Skilled in research design, undergraduate course development, and multidisciplinary curriculum planning, with a keen interest in educational innovation and academic community building.
+
+    
+    \section{Education}
+
+        \begin{twocolentry}{
+            \textit{Ph.D., Feb 2024}}
+            \textbf{Tata Institute of Fundamental Research (TIFR), Mumbai}
+
+            \textit{Ph.D. in Science Education. Awarded Best Thesis Commendation.}
+        \end{twocolentry}
+
+        \vspace{0.2cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item \textbf{Thesis:} Problem-based Learning in Undergraduate Chemistry Laboratories in India
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.20 cm}
+
+        \begin{twocolentry}{
+            \textit{Jun 1991 - Mar 1993}}
+            \textbf{Madras University}
+
+            \textit{M.Sc. in Chemistry (University First Rank Holder)}
+        \end{twocolentry}
+
+        \vspace{0.20 cm}
+
+        \begin{twocolentry}{
+            \textit{}}
+            \textbf{Bharathiar University}
+
+            \textit{M.Sc. in Applied Psychology}
+        \end{twocolentry}
+
+
+
+
+
+    
+    \section{Experience}
+    \begin{twocolentry}{
+        \textit{}    
+            
+        \textit{Jan 2025 - May 2025}}
+            \textbf{Centre Head, Multidisciplinary Curriculum and Pedagogy}
+            
+            \textit{Maharashtra State Faculty Development Academy, (MSFDA)}
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item As Centre Head, I spearhead faculty development programs for teachers all across Maharashtra through formal collaboration with many institutes of eminence and national importance. 
+                \item The position also demands academic inputs for the design of in-house programs in general, and multidisciplinary curriculum design in particular. 
+                \item Development of online content is one of the most important tasks undertaken as centre head currently.
+            \end{highlights}
+        \end{onecolentry}
+
+
+        \vspace{0.2 cm}
+
+
+        \begin{twocolentry}{
+\textit{Varanasi, India}    
+
+\textit{1993 – 1996}}
+    \textbf{Research Scholar}
+    
+    \textit{Indian Institute of Technology (IT-BHU)}
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+    \begin{highlights}
+        \item Conducted research in applied chemistry and toxicology.
+        \item Brief research stints at Central Leather Research Institute, Chennai and Indian Toxicological Research Centre, Lucknow.
+        \item Published three papers, including two in conference proceedings.
+    \end{highlights}
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+% --------- Graduate Student at HBCSE ---------
+\begin{twocolentry}{
+\textit{Mumbai, India}    
+
+\textit{2018 – 2023}}
+    \textbf{Graduate Student – Science Education}
+    
+    \textit{Homi Bhabha Centre for Science Education (TIFR)}
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+    \begin{highlights}
+        \item Conducted doctoral research on problem-based learning in undergraduate chemistry labs across India.
+        \item Designed pedagogical models emphasizing scaffolding and reflective thinking.
+    \end{highlights}
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+% --------- Visiting Faculty at SPPU ---------
+\begin{twocolentry}{
+\textit{Pune, India}    
+
+\textit{2019 – 2022}}
+    \textbf{Visiting Faculty – Chemistry}
+    
+    \textit{Savitribai Phule Pune University}
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+    \begin{highlights}
+        \item Developed and implemented an inquiry-based chemistry laboratory course.
+        \item Taught Environmental Toxicology to undergraduate and graduate students.
+    \end{highlights}
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+% --------- Teaching Assistant at IISER ---------
+\begin{twocolentry}{
+\textit{Pune, India}    
+
+\textit{2012 – 2014}}
+    \textbf{Teaching Assistant}
+    
+    \textit{Indian Institute of Science Education and Research (IISER)}
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+    \begin{highlights}
+        \item Supported teaching in trans-disciplinary courses such as Rational Inquiry.
+        \item Designed and led inquiry-based science workshops for high school students.
+        \item Facilitated science education webinars for students and educators.
+    \end{highlights}
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+% --------- Consultant at MVS Science Center ---------
+\begin{twocolentry}{
+\textit{Pune, India}    
+
+\textit{2007 – 2012}}
+    \textbf{Consultant – Science Communication}
+    
+    \textit{MVS Science Center, IUCAA}
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+    \begin{highlights}
+        \item Designed science communication activities for schools and public engagement.
+        \item Helped establish hands-on science activities in various high schools.
+        \item Conducted workshops for teachers, students, and the public.
+    \end{highlights}
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+% --------- Blue Bells School ---------
+\begin{twocolentry}{
+\textit{Gurgaon, India}    
+
+\textit{2002 – 2005}}
+    \textbf{TGT/PGT Science and Chemistry Teacher}
+    
+    \textit{Blue Bells Model Public School}
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+    \begin{highlights}
+        \item Taught Science and Math at middle school level.
+        \item Taught Chemistry at high school and higher secondary levels.
+        \item Guided students in inter-school science activities and competitions.
+    \end{highlights}
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+% --------- St. Joseph’s School ---------
+\begin{twocolentry}{
+\textit{Bhopal, India}    
+
+\textit{1999 – 2002}}
+    \textbf{Primary Teacher – Science and Math}
+    
+    \textit{St. Joseph’s Senior Secondary School}
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+    \begin{highlights}
+        \item Taught Science and Math to primary-level students.
+        \item Integrated inquiry-based approaches in early science education.
+    \end{highlights}
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\vspace{0.2 cm}
+
+% --------- Workshops and Invited Talks ---------
+\begin{twocolentry}{
+\textit{Various Institutions}    
+
+\textit{2007 – Present}}
+    \textbf{Workshops and Invited Talks on Inquiry-Based Science Teaching}
+    
+    \textit{Colleges, Schools, and Conferences}
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+    \begin{highlights}
+        \item Conducted workshops on inquiry-based science teaching at Garware College, Pune; IISER Pune; Modern College, Pune; Vaze College, Mumbai; St. Felix School, Pune; Vidya Niketan, Pune; Scinnovity, Pune, 
+        \item delivered invited talks on the teaching-learning process at Pratibha College, Pune; National Safety Organization, Pune; ChemCollective Virtual Workshop, IIT Bombay.   
+    \end{highlights}
+\end{onecolentry}
+
+\vspace{0.2 cm}
+
+\begin{twocolentry}{
+\textit{India and International}    
+
+\textit{Ongoing}}
+    \textbf{Editorial and Reviewing Roles, Faculty Facilitation}
+    
+    \textit{}
+\end{twocolentry}
+
+\vspace{0.10 cm}
+\begin{onecolentry}
+    \begin{highlights}
+        \item Reviewer for \textit{Journal of Chemical Education} (Impact Factor: 2.5)
+        \item Reviewer for \textit{Chemistry Education Research and Practice} (Impact Factor: 2.6)
+        \item Editor for \textit{Science Shore}, an e-magazine focused on science education
+        \item Facilitator in Faculty Development Programs across various colleges in Maharashtra
+    \end{highlights}
+\end{onecolentry}
+
+
+    \section{Publications}
+
+\begin{samepage}
+    \begin{twocolentry}{Aug 2024}
+        \textbf{Problem-Based Learning (PBL): A literature review of theory and practice in undergraduate chemistry laboratories}
+            \vspace{0.10 cm}
+
+
+        \mbox{\textbf{\textit{S. Varadarajan}}, S. Ladage}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        \href{https://doi.org/10.1021/acs.jchemed.3c01335}{10.1021/acs.jchemed.3c01335}
+    \end{onecolentry}
+\end{samepage}
+
+\vspace{0.20 cm}
+
+\begin{samepage}
+    \begin{twocolentry}{Jun 2023}
+        \textbf{Doing Science: Introducing Scientific Inquiry to Elementary Classes}
+
+            \vspace{0.10 cm}
+
+
+        \mbox{\textbf{\textit{S. Varadarajan}}, S. Sanzgiri}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        \textit{Resonance}, 28(6), 929–944
+    \end{onecolentry}
+\end{samepage}
+    \vspace{0.20 cm}
+
+\begin{samepage}
+    \begin{twocolentry}{Dec 2022}
+        \textbf{Introducing Incremental Levels of Inquiry in an Undergraduate Chemistry Laboratory: A Case Study on a Short Lab Course}
+
+            \vspace{0.10 cm}
+
+        \mbox{\textbf{\textit{S. Varadarajan}}, S. Ladage}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        \textit{Journal of Chemical Education}, 99(12), 3822–3832
+    \end{onecolentry}
+\end{samepage}
+    \vspace{0.20 cm}
+
+\begin{samepage}
+    \begin{twocolentry}{2022}
+        \textbf{Problem-Based Learning in Undergraduate Chemistry Laboratories in India}
+
+            \vspace{0.10 cm}
+
+        \mbox{\textbf{\textit{S. Varadarajan}}}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        Doctoral Dissertation, Tata Institute of Fundamental Research, Mumbai
+    \end{onecolentry}
+\end{samepage}
+    \vspace{0.20 cm}
+
+\begin{samepage}
+    \begin{twocolentry}{2021}
+        \textbf{Exploring the Role of Scaffolds in Problem-Based Learning (PBL) in an Undergraduate Laboratory}
+
+            \vspace{0.10 cm}
+
+        \mbox{\textbf{\textit{S. Varadarajan}}, S. Ladage}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        \href{https://doi.org/10.1039/D1RP00180A}{10.1039/D1RP00180A}
+    \end{onecolentry}
+\end{samepage}
+    \vspace{0.20 cm}
+
+\begin{samepage}
+    \begin{twocolentry}{2021}
+        \textbf{Adapting an Inquiry-Based Approach for Undergraduate Chemistry Laboratory: An exploratory study}
+
+            \vspace{0.10 cm}
+
+        \mbox{\textbf{\textit{S. Varadarajan}}, S. Ladage}
+    \end{twocolentry}
+
+    \begin{onecolentry}
+        \href{https://doi.org/10.18520/cs/v121/i3/354-359}{10.18520/cs/v121/i3/354-359}
+    \end{onecolentry}
+\end{samepage}
+
+
+
+   \section{Conference Presentations}
+
+\vspace{0.2cm}
+\begin{itemize}
+    \item \textbf{Exploring Higher Education (HE) Teachers’ Attempt to Multidisciplinary Curriculum Design}. Conference presentation at \textit{Episteme-10}, HBCSE, Mumbai, January 3–5, 2025.
+    
+    \item \textbf{Scaffolding Problem-Based Learning in Undergraduate Laboratories}. Oral presentation at \textit{X-Discipline Conference}, University of Nebraska–Lincoln, USA, March 1–3, 2021.
+    
+    \item \textbf{Practicing Science Skills through Virtual Chemistry Laboratory}. Poster presentation at \textit{Methods in Chemistry Education Research (MICER) 2021}, Keele University, UK, May 28, 2021. \\
+    \textit{Co-authors: Anupa Kumbhar and Savita Ladage}
+    
+    \item \textbf{Problem-Based Learning: Life-cycle thinking approach to Indigo-dye lab}. Presented at \textit{IUPAC | CCCE 2021}, Canadian Chemistry Conference and Exhibition, August 13–20, 2021. \\
+    \textit{Co-author: Savita Ladage}
+    
+    \item \textbf{Science Skills through Chemical Laboratories}. Presented during a \textit{ChemCollective Workshop on Virtual Laboratory}, organized by IIT Bombay for ~250 CBSE school teachers, June 17, 2021.
+    
+    \item \textbf{Chemistry Laboratory Education in the Digital Era}. Presented at \textit{Conventional and Digital Methods in Chemistry Education (CDMCE)}, organized by NIT Warangal, July 29–31, 2021.
+    
+    \item \textbf{Exploring the Role of Scaffolds in Mediating Reflective Thinking: Problem-Based Learning in an Undergraduate Chemistry Laboratory}. Presented at \textit{ECRICE-2020}, Weizmann Institute of Science, Israel.
+    
+    \item \textbf{Assessing Small-group Learning in a PBL Undergraduate Chemistry Laboratory}. Presented at \textit{MICER 2020}, University of Edinburgh, UK.
+\end{itemize}
+\section{Achievements}
+
+\begin{onecolentry}
+    \begin{highlights}
+        \item Obtained Proficiency Prize in Inorganic Chemistry and Physics at the undergraduate level
+        \item Secured University First Rank in the M.Sc. (Chemistry) program
+        \item Awarded GATE-93 scholarship for research
+        \item Founded the Funtasktic Science Club for primary and middle school students
+        \item Received the Best Thesis Award from TIFR, Mumbai for Ph.D. research
+    \end{highlights}
+\end{onecolentry}
+
+
+
+\section{References}
+
+\begin{onecolentry}
+    \begin{highlights}
+        \vspace{0.2cm}
+        \item \textbf{Prof. Diane M. Bunce} \\
+        Professor Emerita, Department of Chemistry \\
+        The Catholic University of America, Washington, DC \\
+        \textit{Email:} \href{mailto:Bunce@cua.edu}{Bunce@cua.edu} \\
+        \textit{Phone:} +1 410 279 3724
+
+        \vspace{0.4cm}
+        \item \textbf{Prof. Savita Ladage} \\
+        Professor and Dean \\
+        Homi Bhabha Centre for Science Education, TIFR, Mumbai \\
+        \textit{Email:} \href{mailto:savital@hbcse.tifr.res.in}{savital@hbcse.tifr.res.in}, \href{mailto:savitaladage@gmail.com}{savitaladage@gmail.com} \\
+        \textit{Phone:} +91 98202 50770
+        \vspace{0.4cm}
+
+        \item \textbf{Kalyani Gokhale} \\
+        General Manager (Academics) \\
+        Maharashtra State Faculty Development Academy, Pune, Maharashtra \\
+        \textit{Email:} \href{mailto:kalyaniugokhale@gmail.com}{kalyaniugokhale@gmail.com} \\
+        \textit{Phone:} +91 98900 25513
+
+    \end{highlights}
+\end{onecolentry}
+
+    
+
+\end{document}
