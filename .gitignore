@@ -1,0 +1,5 @@
+# Ignore important communication, SOP, and matrix files
+**/important_communication.*
+**/cv_sujatha.*
+**/sop.md
+**/matrix_thing.py
